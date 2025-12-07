@@ -1,0 +1,70 @@
+# -*- coding: utf-8 -*-
+#@Project : GraduateStudentAllNet
+#@Time    : 2024/4/15 16:03
+#@Author  : H-Tenets
+#@File    : ValConfig.toml
+#@Software: PyCharm
+#@git-v   : 4.0
+#Testing configuration file
+
+thread=4
+
+# Path configuration
+[path]
+# local path
+[path.local]
+data_root = "D:/Programs/Codes/GraduateStudentAllNet/data"
+dataset_list = "D:/Programs/Codes/GraduateStudentAllNet/configs/lists"
+# Final log path is constructed as: test_log_save_dir + current_model.name + "test/logs" or "results" + extra
+modelStored_dir="D:/Programs/Codes/GraduateStudentAllNet/outputs/log/"
+test_log_save_dir="D:/Programs/Codes/GraduateStudentAllNet/outputs/log"
+
+# Training hyperparameters for local runs
+batch_size = 1
+summary_freq = 2
+save_freq =1
+seed=1
+
+# remote path
+[path.remote]
+# Final log path is constructed as: test_log_save_dir + current_model.name + "test/logs" or "results" + extra
+data_root = "/home/dell/DATA/wht/wht_dataset/"
+modelStored_root="/home/dell/DATA/wht/GraduateStudentAllNet_outputs/log/"
+test_log_save_root = "/home/dell/DATA/wht/GraduateStudentAllNet_outputs/log/"
+
+batch_size = 1
+summary_freq = 1
+save_freq = 1
+seed=1
+
+# NOTE 模型设置
+[models]
+[models.sorts]
+model1 = 'UDM_TwoStream'
+current_model = 'UDM_TwoStream'
+
+
+[models.UDM_TwoStream]
+name = 'UDM'
+model ='AGM_UNet'
+
+# Dataset identifier
+dataset = 'SimulationStripes_TwoStream'
+
+# Model checkpoint storage path
+model_path = "AblationExperiment-2/60U-60S_NAFNet_Plus_5u5s_4*4_lr1e3_supL1_self0.7L1_0.3SSIM_EdgeTVmean_depth_mm"
+
+# Test output directory name
+test = "Output_path"
+
+
+[models.UDM_TwoStream.imports]
+dataset_module = "datasets.DatasetLoader.NPZDataset_SimulationStripes" # Load Synthetic dataset
+#dataset_module = "datasets.DatasetLoader.NPZDataset_RealStripes" # Load Real-world dataset
+
+model_module = "models.NAFNet.NAFNet"
+
+loss_module="utils.Losses.UHRNet_Loss"
+
+test_sample_module="TestSample.UDM_TwoStream_testSample"
+#test_sample_module = "TestSample.UDM_TwoStream_Real_testSample"

@@ -1,0 +1,79 @@
+# -*- coding: utf-8 -*-
+#@Project : GraduateStudentAllNet
+#@Time    : 2024/4/14 16:03
+#@Author  : H-Tenets
+#@File    : Train.py
+#@Software: PyCharm
+#@git-v   : 4.0
+#Training configuration file
+
+thread = 8
+
+# Path configuration
+[path]
+# local path
+[path.local]
+data_root = "E:/Program/wht_dataset"
+code_root="E:/Program/GraduateStudentAllNet"
+log_save_dir = "E:/Program/GraduateStudentAllNet_outputs/log"
+
+# Training hyperparameters for local development
+epochs = 5
+batch_size = 2
+best_loss_train = 1000  # Initial best training loss (used for checkpoint saving)
+best_loss_val = 1000    # Initial best validation loss (used for checkpoint saving)
+summary_freq = 100      # Frequency (in steps) to log to TensorBoard; default shows 10 images.
+# To show more (e.g., 100), launch TensorBoard with: --samples_per_plugin=images=100
+save_freq = 100         # Frequency (in steps) to save model checkpoints (.ckpt)
+seed = 1
+
+# remote path
+[path.remote]
+
+data_root = "/home/dell/DATA/wht/wht_dataset/"
+code_root="/home/dell/DATA/wht/E2E" # Root directory of the codebase (used by SetRunPath)
+log_save_dir = "/home/dell/DATA/wht/GraduateStudentAllNet_outputs/log" # Model-specific subdirectories will be created under this path
+
+epochs = 120
+
+batch_size = 2
+
+best_loss_train = 1000
+best_loss_val = 1000
+summary_freq = 10
+save_freq = 10
+seed = 1
+
+# NOTE 模型设置
+[models]
+[models.sorts]
+# The model name determines the subdirectory for logs and saved models
+current_model = 'TwoStream' # Change this to select the active model at runtime
+
+# ----TwoStream_train----
+[models.TwoStream]
+name = 'TwoStream'
+model = 'NANFNet'
+
+dataset = 'SimulationStripes_TwoStream'
+
+resume = false
+#resume = true
+
+extra = "Output_path" #
+
+
+
+[models.TwoStream.imports]
+dataset_module = "datasets.DatasetLoader.NPZDataset_SimulationStripes" # Load Synthetic dataset
+#dataset_module = "datasets.DatasetLoader.NPZDataset_RealStripes"  # Load Real-world dataset
+
+model_module = "models.NAFNet.NAFNet"
+
+
+loss_module="utils.Losses.UDM_TwoStream_Loss"
+
+
+train_sample_module = "TrainSample.TwoStream_trainSample"
+val_sample_module = "ValSample.TwoStream_valSample"
+# ----UDM_TwoStream_train----
